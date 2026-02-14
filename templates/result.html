@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommended Scheme</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Recommended Scheme</h1>
+    <h2>{{ scheme.name }}</h2>
+
+    {% if scheme.link != "#" %}
+    <a href="/apply/{{ scheme.name }}">
+        <button>Apply Now</button>
+    </a>
+    {% else %}
+    <p>No matching scheme found.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">
+        <button>Search Again</button>
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Submitted</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Application Submitted</h1>
+
+    <h3>Your Application ID:</h3>
+    <h2>{{ app_id }}</h2>
+
+    <a href="/status/{{ app_id }}">
+        <button>Check Status</button>
+    </a>
+
+    <br>
+
+    <a href="https://scholarships.gov.in/" target="_blank">
+        <button>Go to Official Website</button>
+    </a>
+</div>
+
+</body>
+</html>

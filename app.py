@@ -2,11 +2,18 @@ import uuid
 import requests
 from flask import Flask, render_template, request
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
 # Temporary storage (use database in production)
 applications = {}
+
+# Get webhook URL from environment variable
+WEBHOOK_URL = os.environ.get("N8N_WEBHOOK_URL")
 
 # -------------------------
 # Scheme Prediction Logic
@@ -82,14 +89,21 @@ def submit_application():
     applications[app_id] = data
 
     # Send to n8n webhook
-    try:
-        response = requests.post("https://diwakar142008.app.n8n.cloud/webhook-test/31ebd9d6-14d4-4525-a1c1-472704eaa88b", json=data)
-        print("Response Status Code:", response.status_code)
-        print("Response Text:", response.text)
-    except Exception as e:
-        print("Error sending data to n8n:", e)
-        print("Failed to send data to n8n")
-        
+    if WEBHOOK_URL:
+        try:
+            response = requests.post(
+                WEBHOOK_URL,
+                json=data,
+                timeout=5
+            )
+            print("Response Status Code:", response.status_code)
+            print("Response Text:", response.text)
+        except requests.exceptions.RequestException as e:
+            print("Error sending data to n8n:", e)
+            print("Application saved locally as fallback")
+    else:
+        print("Warning: N8N_WEBHOOK_URL not configured in environment variables")
+        print("Application saved locally")
 
     return render_template("success.html", app_id=app_id, scheme=data["scheme"])
 
